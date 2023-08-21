@@ -1,4 +1,4 @@
-const abilities = {
+const ABILITIES = {
 	noability: {
 		isNonstandard: "Past",
 		name: "No Ability",
