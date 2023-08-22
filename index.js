@@ -52,7 +52,7 @@ function load_types() {
     let row =
       `<tr id='row-` +
       i +
-      `'><td><img src='img/type/sm/` +
+      `'><td><img src='img/type/` +
       type +
       `.png'></img></td>` +
       `<td id='` +
