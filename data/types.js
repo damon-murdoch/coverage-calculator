@@ -444,3 +444,6 @@ const TYPES = {
 		HPdvs: {atk: 14, def: 13},
 	},
 };
+
+// List of types
+const TYPE_LIST = Object.keys(TYPES);

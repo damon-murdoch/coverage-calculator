@@ -1,3 +1,15 @@
+const SOUND_MOVES = [
+    "uproar",
+    "round",
+    "bug buzz",
+    "chatter",
+    "echoed voice",
+    "hyper voice",
+    "boomburst",
+    "disarming voice",
+    "overdrive",
+];
+
 // List of moves
 const MOVES = [
   {
@@ -9001,3 +9013,8 @@ const MOVES = [
     "gen": "ix"
   }
 ]
+
+// List of moves (by name)
+const MOVES_LIST = MOVES.map(
+  x => x.name
+);

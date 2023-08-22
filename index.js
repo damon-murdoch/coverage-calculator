@@ -1,10 +1,10 @@
 // toCapitalCase(str: string)
-// Returns the provided string 
+// Returns the provided string
 // with the first letter of each
 // word capitalised.
 function toCapitalCase(str) {
   // Split the string on the spaces
-  let spl = str.split(' ');
+  let spl = str.split(" ");
 
   // Loop over the string splits
   for (let i = 0; i < spl.length; i++) {
@@ -13,9 +13,8 @@ function toCapitalCase(str) {
     if (spl[i].length > 1) {
       // Capitalise the first letter, add the rest as lowercase
       spl[i] = spl[i].charAt(0).toUpperCase() + spl[i].slice(1).toLowerCase();
-    }
-    else // String is one or less characters
-    {
+    } // String is one or less characters
+    else {
       // Convert the string to upper case
       spl[i] = spl[i].toUpperCase();
     }
@@ -28,10 +27,10 @@ function toCapitalCase(str) {
 // pad(n: int, width: int, z: int
 // n: number we are padding
 // width: maximum width we are padding to
-// z: character we are padding with 
+// z: character we are padding with
 function pad(n, width, z = 0) {
   // Convert input number to a string
-  n = n + '';
+  n = n + "";
 
   // Return the padded number as a string
   return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
@@ -41,7 +40,7 @@ function pad(n, width, z = 0) {
 // Renders the table rows for each type to the screen
 function load_types() {
   // Dereference the table object
-  let table = document.getElementById('table-coverage');
+  let table = document.getElementById("table-coverage");
 
   // Current row in the table we are working with
   // Used to designate the id given to each row
@@ -50,14 +49,33 @@ function load_types() {
   // Iterate over each type
   for (const type in TYPES) {
     // Generate the row for the new type
-    let row = `<tr id='row-` + i + `'><td><img src='img/type/sm/` + type + `.png'></img></td>` +
-      `<td id='` + i + `-0'> 0 </td>` +
-      `<td id='` + i + `-1'> 0 </td>` +
-      `<td id='` + i + `-2'> 0 </td>` +
-      `<td id='` + i + `-3'> 0 </td>` +
-      `<td id='` + i + `-4'> 0 </td>` +
-      `<td id='` + i + `-5'> 0 </td>` +
-      `<td id='` + i + `-rating'> No Rating </td>` +
+    let row =
+      `<tr id='row-` +
+      i +
+      `'><td><img src='img/type/sm/` +
+      type +
+      `.png'></img></td>` +
+      `<td id='` +
+      i +
+      `-0'> 0 </td>` +
+      `<td id='` +
+      i +
+      `-1'> 0 </td>` +
+      `<td id='` +
+      i +
+      `-2'> 0 </td>` +
+      `<td id='` +
+      i +
+      `-3'> 0 </td>` +
+      `<td id='` +
+      i +
+      `-4'> 0 </td>` +
+      `<td id='` +
+      i +
+      `-5'> 0 </td>` +
+      `<td id='` +
+      i +
+      `-rating'> No Rating </td>` +
       `</tr>`;
 
     // Add the new row to the table
@@ -69,51 +87,91 @@ function load_types() {
 }
 
 // import_pokemon(set: object, id: int): void
-// Imports a given set object 'set' 
+// Imports a given set object 'set'
 // to the form object at index 'id'
 function import_pokemon(set, id) {
-  // Set the species of the set to the species
-  document.getElementById('pkmn-species-' + id)
-    .value = set.species;
 
-  // Set the ability of the set to the ability
-  document.getElementById('pkmn-ability-' + id)
-    .value = set.ability;
+  // Convert the species to lower case
+  const species_lower = set.species.toLowerCase();
 
-  // Loop over the moves
-  for (i in set.moves) {
-    // Dereference the current move
-    let move = set.moves[i];
+  // If the species is in the list
+  if (SPECIES.includes(species_lower)){
 
-    // Generate the row id (for console)
-    let row_id = 'pkmn-' + id + '-move-' + (parseInt(i) + 1);
+    // Set the species of the set to the species
+    document.getElementById("pkmn-species-" + id).value = species_lower;
 
-    // If we have exceeded the move limit, stop
-    if (i >= 3) break;
+    // Convert the ability to lower case
+    const ability_lower = set.ability.toLowerCase();
 
-    // Set the current move to the move from the imported set
-    document.getElementById(row_id).value = set.moves[i];
+    // If the ability is in the list
+    if (ABILITIES.includes(ability_lower)){
+
+      // Set the ability of the set to the ability
+      document.getElementById("pkmn-ability-" + id).value = ability_lower;
+    }
+    else // Unhandled ability
+    {
+      console.warn(`Unrecognised ability: '${ability_lower}' ...`);
+    }
+
+    // If the tera type is specified
+    if ('tera type' in set.other){
+
+      // Convert the tera type to lower case
+      const tera_lower = set.other['tera type'].toLowerCase();
+
+      // Update the tera type for the
+      document.getElementById("pkmn-tera-" + id).value = tera_lower;
+    }
+
+    // Loop over the moves
+    for (let i in set.moves) {
+
+      // Get the move and convert to lower case
+      const move_lower = set.moves[i].toLowerCase();
+
+      // If the move is in the list
+      if (MOVES_LIST.includes(move_lower)){
+          
+        // Generate the row id (for console)
+        let row_id = "pkmn-" + id + "-move-" + (parseInt(i) + 1);
+
+        // Set the current move to the move from the imported set
+        document.getElementById(row_id).value = move_lower;
+      }
+      else // Move is not in the list
+      {
+        console.warn(`Unrecognised move: '${move_lower}' ...`);
+      }
+    }
+
+    // Verify the displayed sprite
+    set_sprite(id);
+  }
+  else // Unrecognised species
+  {
+    console.warn(`Unrecognised species: '${species_lower}' ...`);
   }
 
-  // Verify the displayed sprite
-  set_sprite(id);
+  // Update
+  update(id);
 }
 
 // add_pokemon(void): void
 // Adds a new pokemon selection tab to the window
 function add_pokemon(set = null) {
   // Dereference the table object
-  let table = document.getElementById('table-pkmn-contents');
+  let table = document.getElementById("table-pkmn-contents");
 
-  // Dereference the pokemon_count object, 
+  // Dereference the pokemon_count object,
   // and increment it after assignment
   let id = document.pokemon_count++;
 
   // Create the data row
-  let data = document.createElement('tr');
+  let data = document.createElement("tr");
 
   // Set the data row id
-  data.id = 'pkmn-' + id + '-info';
+  data.id = "pkmn-" + id + "-info";
 
   // Species placeholder element id
   const species_id = `pkmn-species-${id}`;
@@ -121,43 +179,55 @@ function add_pokemon(set = null) {
   // Ability placeholder element id
   const ability_id = `pkmn-ability-${id}`;
 
+  // Tera type placeholder element id
+  const tera_id = `pkmn-tera-${id}`;
+
+  // Tera enabled / disabled checkbox
+  const tera_check_id = `${tera_id}-check`;
+
   // Set the data row content
-  data.innerHTML = `<td><img id='pkmn-${id}-sprite' src='img/box/egg.png'></img></td>` +
+  data.innerHTML =
+    `<td><img id='pkmn-${id}-sprite' src='img/box/egg.png'></img></td>` +
     `<td><div>` +
-    `<select id='${species_id}' class='form-control' type=text name='pkmn-species-${id}' onChange='update(${id})'></select>` +
-    `<select id='${ability_id}' class='form-control mt-2' type=text name='pkmn-ability-${id}' onChange='update(${id})'></select>` +
+    `<select id='${species_id}' class='form-control' name='pkmn-species-${id}' onChange='update(${id})'></select>` +
+    `<select id='${ability_id}' class='form-control mt-2' name='pkmn-ability-${id}' onChange='update(${id})'></select>` +
+    `<div class='input-group mt-2'><div class="input-group-text"><small class='mr-2'>Terastralised</small>` +
+    `<input id='${tera_check_id}' type="checkbox" name='${tera_check_id}' onChange='update(${id})'></div>` + 
+    `<select id='${tera_id}' class='form-control' name='pkmn-tera-${id}' onChange='update(${id})'></select></div>` +
     `</div></td>`;
 
   // Add the data row to the form
   table.appendChild(data);
 
   // Create the moves selection row
-  let move = document.createElement('tr');
+  let move = document.createElement("tr");
 
   // Set the move row id
-  move.id = 'pkmn-' + id + '-move';
+  move.id = "pkmn-" + id + "-move";
 
   // Set the move row content
-  move.innerHTML = `<td><div class=''>` +
-    `<td><input id='pkmn-${id}-move-1' class='form-control' type=text name='pkmn-move1-${id}' placeholder='Move 1' onChange='update(${id})'>` +
-    `<input id='pkmn-${id}-move-2' class='form-control' type=text name='pkmn-move2-${id}' placeholder='Move 2' onChange='update(${id})'>` +
-    `<input id='pkmn-${id}-move-3' class='form-control' type=text name='pkmn-move3-${id}' placeholder='Move 3' onChange='update(${id})'>` +
-    `<input id='pkmn-${id}-move-4' class='form-control' type=text name='pkmn-move4-${id}' placeholder='Move 4' onChange='update(${id})'>` +
+  move.innerHTML =
+    `<td><div class=''>` +
+    `<td><select id='pkmn-${id}-move-1' class='form-control' name='pkmn-move1-${id}' onChange='update(${id})'></select>` +
+    `<select id='pkmn-${id}-move-2' class='form-control' name='pkmn-move2-${id}' onChange='update(${id})'></select>` +
+    `<select id='pkmn-${id}-move-3' class='form-control' name='pkmn-move3-${id}' onChange='update(${id})'></select>` +
+    `<select id='pkmn-${id}-move-4' class='form-control' name='pkmn-move4-${id}' onChange='update(${id})'></select>` +
     `</div></td>`;
 
   // Add the move row to the form
   table.appendChild(move);
 
   // Create the control row
-  let ctrl = document.createElement('tr');
+  let ctrl = document.createElement("tr");
 
   // Set the control row id
-  ctrl.id = 'pkmn-' + id + '-ctrl';
+  ctrl.id = "pkmn-" + id + "-ctrl";
 
   // Set the control row content
-  ctrl.innerHTML = `<td colspan=2><div class='row'>` +
+  ctrl.innerHTML =
+    `<td colspan=2><div class='row'>` +
     `<button id='pkmn-rmov-${id}' class='col btn btn-danger ml-3 mr-1 mt-1' onClick='rmv_pokemon(${id})'>Remove Pokemon</button>` +
-    `<button id='pkmn-hide-${id}' class='col btn btn-warning mr-3 ml-1 mt-1' onClick='toggle_moves(${id})'>Show Moves</button>` +
+    `<button id='pkmn-hide-${id}' class='col btn btn-secondary mr-3 ml-1 mt-1' onClick='toggle_moves(${id})'>Show Moves</button>` +
     `</div></td>`;
 
   // Add the control row to the form
@@ -166,13 +236,22 @@ function add_pokemon(set = null) {
   // Populate the species drop-down
   populate_species_dropdown(species_id);
 
-  // Populate the moves drop-down
-  populate_moves_dropdown(ability_id);
+  // Populate the abilities drop-down
+  populate_abilities_dropdown(ability_id);
+
+  // Populate the tera type drop-down
+  populate_tera_dropdown(tera_id);
+
+  // Loop over move drop-downs
+  for(let i=1; i<=4; i++){
+    // Populate the move drop-down
+    populate_moves_dropdown(`pkmn-${id}-move-${i}`);
+  }
 
   // Hide the moves from the form to save space by default
   toggle_moves(id);
 
-  // If a pokemon set  is 
+  // If a pokemon set  is
   // provided in the arguments
   if (set) {
     // Import it into the row
@@ -184,9 +263,9 @@ function add_pokemon(set = null) {
 // Removes the pokemon selection tab from the window
 function rmv_pokemon(id) {
   // Remove the related elements from the form
-  document.getElementById('pkmn-' + id + '-info').remove();
-  document.getElementById('pkmn-' + id + '-move').remove();
-  document.getElementById('pkmn-' + id + '-ctrl').remove();
+  document.getElementById("pkmn-" + id + "-info").remove();
+  document.getElementById("pkmn-" + id + "-move").remove();
+  document.getElementById("pkmn-" + id + "-ctrl").remove();
 
   // Update the table
   update();
@@ -196,41 +275,40 @@ function rmv_pokemon(id) {
 // Hides the selected pokemon tab from the form to save space
 function hide_moves(id) {
   // Hide the moves display of the pokemon
-  document.getElementById('pkmn-' + id + '-move').style.display = 'none';
+  document.getElementById("pkmn-" + id + "-move").style.display = "none";
 
   // Update the hide-moves button to be a show-moves button
-  let toggle = document.getElementById('pkmn-hide-' + id);
+  let toggle = document.getElementById("pkmn-hide-" + id);
 
   // Set the display text on the button
-  toggle.innerHTML = 'Show Moves';
+  toggle.innerHTML = "Show Moves";
 }
 
 // hide_moves(id: int): void
 // Shows the selected pokemon tab on the form
 function show_moves(id) {
   // Hide the moves display of the pokemon
-  document.getElementById('pkmn-' + id + '-move').style.display = 'table-row';
+  document.getElementById("pkmn-" + id + "-move").style.display = "table-row";
 
   // Update the hide-moves button to be a show-moves button
-  let toggle = document.getElementById('pkmn-hide-' + id);
+  let toggle = document.getElementById("pkmn-hide-" + id);
 
   // Set the display text on the button
-  toggle.innerHTML = 'Hide Moves';
+  toggle.innerHTML = "Hide Moves";
 }
 
 // toggle_moves(id: int): void
-// Depending on the current style 
+// Depending on the current style
 function toggle_moves(id) {
   // Dereference the move control tab
-  let elem = document.getElementById('pkmn-' + id + '-move');
+  let elem = document.getElementById("pkmn-" + id + "-move");
 
   // If the element is currently hidden
-  if (elem.style.display == 'none') {
+  if (elem.style.display == "none") {
     // Run the display routine
     show_moves(id);
-  }
-  else // Element is currently displayed
-  {
+  } // Element is currently displayed
+  else {
     // Run the hide routine
     hide_moves(id);
   }
@@ -241,7 +319,7 @@ function toggle_moves(id) {
 // that the image has been rendered
 // successfully.
 function verify_sprite(img) {
-  // If image failed to load, 
+  // If image failed to load,
   // naturalWidth will be zero.
   if (img.naturalWidth === 0) {
     return false;
@@ -252,43 +330,39 @@ function verify_sprite(img) {
 }
 
 // get_sprite(id: int): void
-// Given a pokemon id, (attempt to) 
-// update the sprite displayed in 
+// Given a pokemon id, (attempt to)
+// update the sprite displayed in
 // the sprite box for the given pokemon.
 function set_sprite(id) {
-
   // Dereference the sprite object for the pokemon
   let sprite = document.getElementById(`pkmn-${id}-sprite`);
 
   // Get the species for the Pokemon with the given id, converted to lower case
-  const id_species = document.getElementById('pkmn-species-' + id).value; 
-  
+  const id_species = document.getElementById("pkmn-species-" + id).value;
+
   // Convert the species to lower case
-  const species_lower = id_species.toLowerCase();
+  const species_lower = id_species.toLowerCase()
 
   // Find the species in the pokedex array
-  const species = POKEDEX.find(x => x.species == species_lower);
+  const species = POKEDEX.find((x) => x.species == species_lower);
 
   // If the search was successful
   if (species) {
 
+    // Generate the sprite reference
+    const species_sprite = species_lower.replace(' ', '-');
+
     // Generate the filename
-    let filename = `img/box/${species.species}.png`;
+    let filename = `img/box/${species_sprite}.png`;
 
     // Set the sprite source to the generated image name
     sprite.src = filename;
 
     // If the sprite is verified successfully
-    if (verify_sprite(sprite)) {
+    if (verify_sprite(species_sprite)) {
       // Script has worked as expected, return true
-      return true
+      return true;
     }
-    else {
-      // No need to do anything
-    }
-  }
-  else {
-    // No need to do anything
   }
 
   // If we make it here, sprite has not been configured
@@ -301,42 +375,44 @@ function set_sprite(id) {
 }
 
 // function get_ability(damage: int, index: int, ability: string): int
-// Returns the damage taken for a given current damage stat (damage), 
-// a type index (index), and an ability (ability). 
+// Returns the damage taken for a given current damage stat (damage),
+// a type index (index), and an ability (ability).
 function get_ability(damage, index, ability) {
   // 0: normal
   // 1: weak
   // 2: resist
   // 3: immune
 
+  // Updated
+  let updated = false;
+
   // Switch on type
   switch (index) {
     // Electric Type
     case 3:
-
       // Switch on ability
       switch (ability) {
         // Motor Drive Grants Lightning Immunity
-        case 'Motor Drive':
-
+        case "motor drive":
           // Set damage to 3 (immune)
           damage = 3;
+          updated = true;
 
           break;
 
         // Volt Absorb grants Lightning Immunity
-        case 'Volt Absorb':
-
+        case "volt absorb":
           // Set damage to 3 (immune)
           damage = 3;
+          updated = true;
 
           break;
 
         // Lightning Rod Grants Lightning Immunity
-        case 'Lightning Rod':
-
+        case "lightning rod":
           // Set damage to 3 (immune)
           damage = 3;
+          updated = true;
 
           break;
       }
@@ -345,35 +421,25 @@ function get_ability(damage, index, ability) {
 
     // Fire Type
     case 6:
-
       // Switch on ability
       switch (ability) {
         // Fluffy adds fire weakness
-        case 'Fluffy':
-
+        case "fluffy":
           // Switch on damage dealt
           switch (damage) {
             // If the attack is currently neutral
             case 0:
-
               // Set it to super-effective
               damage = 1;
-
-              break;
-
-            // If the attack is currently super-effective
-            case 1:
-
-              // Set it to 4x effective
-              // damage = ???
+              updated = true;
 
               break;
 
             // If the attack is currently resisted
             case 2:
-
               // Set it to neutral
               damage = 0;
+              updated = true;
 
               break;
           }
@@ -381,71 +447,52 @@ function get_ability(damage, index, ability) {
           break;
 
         // Dry Skin adds fire weakness
-        case 'Dry Skin':
-
+        case "dry skin":
           // Switch on damage dealt
           switch (damage) {
             // If the attack is currently neutral
             case 0:
-
               // Set it to super-effective
               damage = 1;
-
-              break;
-
-            // If the attack is currently super-effective
-            case 1:
-
-              // Set it to 4x effective
-              // damage = ???
+              updated = true;
 
               break;
 
             // If the attack is currently resisted
             case 2:
-
               // Set it to neutral
               damage = 0;
-
+              updated = true;
+              
               break;
           }
 
           break;
 
         // Flash Fire grants fire immunity
-        case 'Flash Fire':
-
+        case "flash fire":
           // Set damage to 3 (immune)
           damage = 3;
 
           break;
 
         // Grants additional fire resist
-        case 'Heatproof':
-
+        case "heatproof":
           // Switch on damage dealt
           switch (damage) {
             // If the attack is currently neutral
             case 0:
-
               // Set it to resisted
               damage = 2;
+              updated = true;
 
               break;
 
             // If the attack is currently super-effective
             case 1:
-
               // Set it to neutral
               damage = 0;
-
-              break;
-
-            // If the attack is currently resisted
-            case 2:
-
-              // Set it to 4x resisted
-              // damage = 0;
+              updated = true;
 
               break;
           }
@@ -453,31 +500,22 @@ function get_ability(damage, index, ability) {
           break;
 
         // Grants additional fire resist
-        case 'Water Bubble':
-
+        case "water bubble":
           // Switch on damage dealt
           switch (damage) {
             // If the attack is currently neutral
             case 0:
-
               // Set it to resisted
               damage = 2;
+              updated = true;
 
               break;
 
             // If the attack is currently super-effective
             case 1:
-
               // Set it to neutral
               damage = 0;
-
-              break;
-
-            // If the attack is currently resisted
-            case 2:
-
-              // Set it to 4x resisted
-              // damage = 0;
+              updated = true;
 
               break;
           }
@@ -485,31 +523,22 @@ function get_ability(damage, index, ability) {
           break;
 
         // Grants additional fire resist
-        case 'Thick Fat':
-
+        case "thick fat":
           // Switch on damage dealt
           switch (damage) {
             // If the attack is currently neutral
             case 0:
-
               // Set it to resisted
               damage = 2;
+              updated = true;
 
               break;
 
             // If the attack is currently super-effective
             case 1:
-
               // Set it to neutral
               damage = 0;
-
-              break;
-
-            // If the attack is currently resisted
-            case 2:
-
-              // Set it to 4x resisted
-              // damage = 0;
+              updated = true;
 
               break;
           }
@@ -521,14 +550,13 @@ function get_ability(damage, index, ability) {
 
     // Grass Type
     case 9:
-
       // Switch on ability
       switch (ability) {
         // Sap Sipper - Grants immunity to grass moves
-        case 'Sap Sipper':
-
+        case "sap Sipper":
           // Set damage to 3 (immune)
           damage = 3;
+          updated = true;
 
           break;
       }
@@ -537,14 +565,13 @@ function get_ability(damage, index, ability) {
 
     // Ground Type
     case 10:
-
       // Switch on ability
       switch (ability) {
         // Levitate - Grants immunity to ground moves
-        case 'Levitate':
-
+        case "levitate":
           // Set damage to 3 (immune)
           damage = 3;
+          updated = true;
 
           break;
       }
@@ -553,37 +580,28 @@ function get_ability(damage, index, ability) {
 
     // Ice Type
     case 11:
-
       // Switch on ability
       switch (ability) {
         // Grants additional ice resist
-        case 'Thick Fat':
-
+        case "thick fat":
           // Switch on damage dealt
           switch (damage) {
             // If the attack is currently neutral
             case 0:
-
               // Set it to resisted
               damage = 2;
+              updated = true;
 
               break;
 
             // If the attack is currently super-effective
             case 1:
-
               // Set it to neutral
               damage = 0;
+              updated = true;
 
               break;
-
-            // If the attack is currently resisted
-            case 2:
-
-              // Set it to 4x resisted
-              // damage = 0;
-
-              break;
+          
           }
 
           break;
@@ -593,14 +611,13 @@ function get_ability(damage, index, ability) {
 
     // Water Type
     case 17:
-
       // Switch on ability
       switch (ability) {
         // Water Absorb - Grants immunity to water moves
-        case 'Water Absorb':
-
+        case "water absorb":
           // Set damage to 3 (immune)
           damage = 3;
+          updated = true;
 
           break;
       }
@@ -621,76 +638,76 @@ function get_move(move, ability = null) {
   let type = move.type;
 
   // Get the category of the move
-  let category = move.category;
+  // let category = move.category;
 
   // If the move is a sound-based move, set sound to 1. Otherwise, set to 0
-  let sound = ('sound' in move.flags && move.flags['sound'] == 1) ? 1 : 0;
+  // let sound = "sound" in move.flags && move.flags["sound"] == 1 ? 1 : 0;
+
+  // Check if the move is sound-based or not
+  let sound = (move.name in SOUND_MOVES);
 
   // If the category is either physical or special
   // In other words, if the attack deals damage
-  if ($.inArray(category, ['Physical', 'Special']) >= 0) {
+
+  // If the move is either physical or special
+  if (['physical', 'special'].includes(move.category)){
+
     // If the ability is set
     if (ability) {
+
       // Switching on ability rather than type
       // simplifies the handling of Normalize.
       switch (ability) {
         // Aerilate - Converts all normal attacks to flying
-        case 'Aerilate':
-
+        case "Aerilate":
           // If the attack is normal, change it to flying
           // Otherwise, leave it alone
-          type = (type == 'Normal') ? 'Flying' : type;
+          type = type == "Normal" ? "Flying" : type;
 
           break;
 
         // Pixilate - Converts all normal attacks to fairy
-        case 'Pixilate':
-
+        case "Pixilate":
           // If the attack is normal, change it to fairy
           // Otherwise, leave it alone
-          type = (type == 'Normal') ? 'Fairy' : type;
+          type = type == "Normal" ? "Fairy" : type;
 
           break;
 
         // Galvanize - Converts all normal attacks to electric
-        case 'Galvanize':
-
+        case "Galvanize":
           // If the attack is normal, change it to electric
           // Otherwise, leave it alone
-          type = (type == 'Normal') ? 'Electric' : type;
+          type = type == "Normal" ? "Electric" : type;
 
           break;
 
         // Refridgerate - Converts all normal attacks to ice
-        case 'Refridgerate':
-
+        case "Refridgerate":
           // If the attack is normal, change it to ice
           // Otherwise, leave it alone
-          type = (type == 'Normal') ? 'Ice' : type;
+          type = type == "Normal" ? "Ice" : type;
 
           break;
 
         // Liquid Voice - Converts all sound attacks to water
-        case 'Liquid Voice':
-
+        case "Liquid Voice":
           // If the attack is sound based, change it to water
           // Otherwise, leave it alone
-          type = (sound == 1) ? 'Water' : type;
+          type = sound == 1 ? "Water" : type;
 
           break;
 
         // Normalize - Converts all attacks to normal
-        case 'Normalize':
-
+        case "Normalize":
           // Make the attack normal type
-          type = 'Normal';
+          type = "Normal";
 
           break;
       }
     }
-  }
-  else // If the attack does not deal damage
-  {
+  } // If the attack does not deal damage
+  else {
     // Push a null value to fill space
     // Status moves do not count towards
     // type coverage
@@ -704,7 +721,7 @@ function get_move(move, ability = null) {
 
 // function get_coverage(types: list): object
 // Given a list object containing two or less types,
-// calculates the weaknesses and resistances of the 
+// calculates the weaknesses and resistances of the
 // type or type combination.
 // 0: immune, 1: 4x resist, 2: resist, 3: neutral, 4: weak, 5: 4x weak
 function get_coverage(types, ability = null) {
@@ -716,13 +733,11 @@ function get_coverage(types, ability = null) {
 
   // Iterate over the types in the combo
   for (let type of types) {
-
     // Dereference the type info from the types data
     let target = document.types[type];
 
     // Iterate over other types
     for (source in target.damageTaken) {
-
       // Convert the source to lower case
       const source_lower = source.toLowerCase();
 
@@ -730,8 +745,7 @@ function get_coverage(types, ability = null) {
       let s_index = document.typeMap[source_lower];
 
       // If the current source is not a type
-      if (s_index)
-      {
+      if (s_index) {
         // 0: normal
         // 1: weak
         // 2: resist
@@ -743,15 +757,13 @@ function get_coverage(types, ability = null) {
         // If an ability is provided
         if (ability) {
           // Get the new damage, as modified by the ability
-          damage = get_ability(damage, s_index, ability)
+          damage = get_ability(damage, s_index, ability);
         }
 
         // Switch case on damage taken
         switch (damage) {
-
           // Normal Damage
           case 0:
-
             // Increment the neutral index
             map[s_index][3]++;
 
@@ -759,7 +771,6 @@ function get_coverage(types, ability = null) {
 
           // Hits for weakness
           case 1:
-
             // Increment the weak index
             map[s_index][4]++;
 
@@ -767,7 +778,6 @@ function get_coverage(types, ability = null) {
 
           // Hits for resistance
           case 2:
-
             // Increment the resist index
             map[s_index][2]++;
 
@@ -775,7 +785,6 @@ function get_coverage(types, ability = null) {
 
           // Is immune
           case 3:
-
             // Increment the immune index
             map[s_index][0]++;
 
@@ -791,7 +800,7 @@ function get_coverage(types, ability = null) {
     let row = map[x];
 
     // If Ability is Wonder Guard
-    if (ability == 'Wonder Guard') {
+    if (ability == "Wonder Guard") {
       // If the type isn't weak
       if (!(row[4] || row[5])) {
         // Make the type immune
@@ -871,7 +880,6 @@ function get_damage(moves, ability) {
         switch (type.damageTaken[move]) {
           // Normal
           case 0:
-
             // Increment the neutral hits variable
             map[type_id][3]++;
 
@@ -879,7 +887,6 @@ function get_damage(moves, ability) {
 
           // Weak
           case 1:
-
             // Increment the weakness hits variable
             map[type_id][4]++;
 
@@ -887,7 +894,6 @@ function get_damage(moves, ability) {
 
           // Resist
           case 2:
-
             // Increment the resisted hits variable
             map[type_id][2]++;
 
@@ -895,16 +901,14 @@ function get_damage(moves, ability) {
 
           // Immune
           case 3:
-
             // Increment the immune hits variable
             map[type_id][0]++;
 
             break;
         }
       }
-    }
-    else // Move is null
-    {
+    } // Move is null
+    else {
       // Do nothing
     }
   }
@@ -929,10 +933,8 @@ function get_table_defensive(types, abilities) {
     // Dereference this indexes ability
     let ability = abilities[i];
 
-    // Generate the map 
+    // Generate the map
     let combo_map = get_coverage(combo, ability);
-
-    console.log(combo_map);
 
     // Add the two maps together
     map = add_map(map, combo_map);
@@ -950,10 +952,10 @@ function set_table_defensive() {
   document.active = 0;
 
   // Darken the defensive tab, to show that it is active
-  document.getElementById('option-defensive').className = 'bg-light';
+  document.getElementById("option-defensive").className = "bg-dark";
 
   // Lighten the offensive tab, to show that it is hidden
-  document.getElementById('option-offensive').className = '';
+  document.getElementById("option-offensive").className = "bg-secondary";
 
   // Update the form
   update();
@@ -993,10 +995,10 @@ function set_table_offensive() {
   document.active = 1;
 
   // Lighten the defensive tab, to show that it is hidden
-  document.getElementById('option-defensive').className = '';
+  document.getElementById("option-defensive").className = "bg-secondary";
 
   // Darken the offensive tab, to show that it is active
-  document.getElementById('option-offensive').className = 'bg-light';
+  document.getElementById("option-offensive").className = "bg-dark";
 
   // Update the form
   update();
@@ -1020,14 +1022,14 @@ function evaluate_row(row) {
   // Weights:
   // 4x resists and immunities add 2, regular resists add 1
   // 4x weaks remove 2, regular weaks remove 1
-  // neutral hits neither add nor remove anything 
+  // neutral hits neither add nor remove anything
 
   // Return the calculated rating
-  return 0 + (row[0] * 2) + (row[1] * 2) + row[2] - row[4] - (row[5] * 2);
+  return 0 + row[0] * 2 + row[1] * 2 + row[2] - row[4] - row[5] * 2;
 }
 
 // Given a map (list[]) object generated by the offensive
-// or defensive table generation functions, inserts the 
+// or defensive table generation functions, inserts the
 // values into the display table on the page.
 function populate_table(map) {
   // iterate over map 'x'
@@ -1035,71 +1037,72 @@ function populate_table(map) {
     // Iterate over map 'y'
     for (let j = 0; j < map[i].length; j++) {
       // Dereference the row on the table
-      document.getElementById(i + '-' + j).innerHTML = map[i][j];
+      document.getElementById(i + "-" + j).innerHTML = map[i][j];
     }
 
     // Get a mathematical rating of the row
-    let rating = document.active == 0 ? evaluate_row(map[i]) : -evaluate_row(map[i]);
+    let rating =
+      document.active == 0 ? evaluate_row(map[i]) : -evaluate_row(map[i]);
 
     // Dereference the row we are looking at
-    let elem_row = document.getElementById('row-' + i);
+    let elem_row = document.getElementById("row-" + i);
 
     // Dereference row element containing the rating
-    let elem_rating = document.getElementById(i + '-rating');
+    let elem_rating = document.getElementById(i + "-rating");
 
     // If the rating is greater than or equal to two
     // Meaning that, we have 2 or more resistances than weaknesses
     if (rating >= 2) {
       // Very good coverage
-      elem_rating.innerHTML = 'Very Good';
+      elem_rating.innerHTML = "Very Good";
 
       // Row background dark green
-      elem_row.style[`background-color`] = '#ccffcc';
+      elem_row.style[`background-color`] = get_color('verygood');
     }
 
     // If we have one more resistance than weaknesses
     else if (rating > 0) {
       // Good coverage
-      elem_rating.innerHTML = 'Good';
+      elem_rating.innerHTML = "Good";
 
-      // Row background light green			
-      elem_row.style[`background-color`] = '#e6ffe6';
+      // Row background light green
+      elem_row.style[`background-color`] = get_color('good');
     }
 
     // If we have the same number of weaknesses and resistances
     else if (rating == 0) {
       // Even coverage
-      elem_rating.innerHTML = 'Even';
+      elem_rating.innerHTML = "Even";
 
       // Row background white
-      elem_row.style[`background-color`] = '#ffffff';
+      elem_row.style[`background-color`] = get_color('neutral');
     }
 
     // If we have 2 or more weaknesses than resistances
     else if (rating <= -2) {
       // Very poor coverage
-      elem_rating.innerHTML = 'Very Poor';
-      https://getbootstrap.com/docs/4.0/utilities/text/
+      elem_rating.innerHTML = "Very Poor";
+      //getbootstrap.com/docs/4.0/utilities/text/
       // Row background dark red
-      elem_row.style[`background-color`] = '#ffcccc';
+      https: elem_row.style[`background-color`] = get_color('verybad');
     }
 
     // If we have one more weakness than resistances
     else if (rating < 0) {
       // Poor Coverage
-      elem_rating.innerHTML = 'Poor';
+      elem_rating.innerHTML = "Poor";
 
       // Row background light red
-      elem_row.style[`background-color`] = '#ffe6e6';
+      elem_row.style[`background-color`] = get_color('bad');
     }
 
     // Unknown Rating
     else {
       // No coverage
-      elem_rating.innerHTML = 'Not Calculated';
+      elem_rating.innerHTML = "Not Calculated";
 
       // Row background white
-      elem_row.style[`background-color`] = '#ffffff';
+      elem_row.style[`background-color`] = get_color('neutral');
     }
   }
 }
@@ -1116,8 +1119,7 @@ function update(id = null) {
   // If the given id is null or undefined
   if (id == null || id == undefined) {
     // No need to update sprites
-  }
-  else {
+  } else {
     // Attempt to update sprite
     set_sprite(id);
   }
@@ -1127,7 +1129,7 @@ function update(id = null) {
   // (Duplicates allowed)
   document.types_list = [];
 
-  // Array of all of the abilities 
+  // Array of all of the abilities
   // which are on the team
   // (Duplicates allowed)
   document.abilities_list = [];
@@ -1140,118 +1142,140 @@ function update(id = null) {
   document.paste_export = [];
 
   // Iterate over all of the elements which start with 'pkmn-species-'
-  document.querySelectorAll(`*[id*='pkmn-species-']`).forEach(function (element) {
+  document
+    .querySelectorAll(`*[id*='pkmn-species-']`)
+    .forEach(function (element) {
+      // Dereference the ID Value of the Pokemon
+      let id = element.id.split("pkmn-species-")[1];
 
-    // Dereference the ID Value of the Pokemon
-    let id = element.id.split('pkmn-species-')[1];
+      // Convert the species to lower case
+      const species = element.value.toLowerCase();
 
-    // Convert the species to lower case
-    const species = element.value.toLowerCase();
+      // Find the pokedex entry for the species
+      const lookup_dex = POKEDEX.find((x) => x.species == species);
 
-    // Find the pokedex entry for the species
-    const lookup_dex = POKEDEX.find(x => x.species == species);
+      // If a non-null value is returned
+      if (lookup_dex) {
+        // Update the content for the export link
 
-    // If a non-null value is returned
-    if (lookup_dex) {
-      // Update the content for the export link
+        // Start with just the name of the Pokemon and a new line
+        let content = element.value + `\n`;
 
-      // Start with just the name of the Pokemon and a new line
-      let content = element.value + `\n`;
+        // Pokemon type list
+        const types = [];
 
-      // Get the type list for the species
-      const types = [lookup_dex.type1];
+        // Dereference the ability
+        const tera_lower = document.getElementById("pkmn-tera-" + id).value.toLowerCase();
 
-      // Dex entry has a second type
-      if ('type2' in lookup_dex){
-        // Add it to the list
-        types.push(lookup_dex.type2);
-      }
+        // Check if the tera is enabled or disabled for this pokemon
+        const tera_checked = document.getElementById(`pkmn-tera-${id}-check`).checked;
 
-      // Add the type combination to the list of types
-      document.types_list.push(types);
+        // If tera type is found
+        if (TYPE_LIST.includes(tera_lower)){
 
-      // Dereference the ability
-      let ability = document.getElementById('pkmn-ability-' + id).value;
-
-      // If an ability has been set
-      if (ability) {
-        // Add the ability to the abilities list
-        document.abilities_list.push(ability);
-
-        // Add the name of the ability to the export content
-        content += `Ability: ` + ability + `\n`;
-      }
-      else // Pokemon has no set ability
-      {
-        // Push a null element (just to pad the list)
-        document.abilities_list.push(null);
-      }
-
-      // Empty list of moves
-      let moves = [];
-
-      // Iterate over the pokemon's moves in the form
-      document.querySelectorAll(`*[id*='pkmn-${id}-move-']`).forEach(function (mv_element) {
-
-        // Convert the move name to lower case
-        const mv_name = mv_element.value.toLowerCase();
-
-        // Find the move data in the moves list
-        let lookup_move = MOVES.find(x => x.name === mv_name);
-
-        // If a non-null value is returned
-        if (lookup_move) {
-          // Evaluate the type
-          let type = get_move(lookup_move, ability);
-
-          // If the type returned is a valid type (and not null)
-          if ($.inArray(type, Object.keys(document.types)) >= 0) {
-            // Set the background to the colour specified for the type
-            mv_element.style[`background-color`] = document.typeColours[type];
-          }
-          else // Does not match a valid type (or is null)
-          {
-            // Set the background to standard white
-            mv_element.style[`background-color`] = '#ffffff';
+          // Use the tera type instead of the normal type
+          if (tera_checked){
+            // Add the type to the types list
+            types.push(tera_lower);
           }
 
-          // Add the move type to the moves list
-          moves.push(type);
-
-          // Add the move to the export content
-          content += `- ` + mv_element.value + `\n`;
+          // Add the name of the ability to the export content
+          content += `Tera Type: ` + toCapitalCase(tera_lower) + `\n`;
         }
-        else {
-          // Push a null value to fill space
-          moves.push(null);
+
+        // If the types list is empty (no tera type)
+        if (types.length === 0){
+          // Add the primary type to the list
+          types.push(lookup_dex.type1);
+            
+          // Dex entry has a second type
+          if ("type2" in lookup_dex) {
+            // Add it to the list
+            types.push(lookup_dex.type2);
+          }
         }
-      });
 
-      // Add the set's list of moves to the document moves list
-      document.moves_list.push(moves);
+        // Add the type combination to the list of types
+        document.types_list.push(types);
 
-      // Add the pokemon's paste content to the export variable
-      document.paste_export.push(content);
-    }
-    else {
-      // Pokemon does not exist, no need to continue
-      console.warn(`Warning: Species '${species}' not found!`);
-    }
-  });
+        // Dereference the ability
+        const ability_lower = document.getElementById("pkmn-ability-" + id).value;
+
+        // Ability is found
+        if (ABILITIES.includes(ability_lower)){
+
+          // Add the ability to the abilities list
+          document.abilities_list.push(ability_lower);
+
+          // Add the name of the ability to the export content
+          content += `Ability: ` + toCapitalCase(ability_lower) + `\n`;
+        }
+        else // Pokemon has no set ability / invalid ability
+        {
+          console.warn(`Unrecognised ability: ${ability_lower} ...`);
+
+          // Push a null element (just to pad the list)
+          document.abilities_list.push(null);
+        }
+
+        // Empty list of moves
+        let moves = [];
+
+        // Iterate over the pokemon's moves in the form
+        document
+          .querySelectorAll(`*[id*='pkmn-${id}-move-']`)
+          .forEach(function (mv_element) {
+            // Convert the move name to lower case
+            const mv_name = mv_element.value.toLowerCase();
+
+            // Find the move data in the moves list
+            let lookup_move = MOVES.find((x) => x.name === mv_name);
+
+            // If a non-null value is returned
+            if (lookup_move) {
+              // Evaluate the type
+              let type = get_move(lookup_move, ability_lower);
+
+              // Add the move type to the moves list
+              moves.push(type);
+
+              // Add the move to the export content
+              content += `- ` + mv_element.value + `\n`;
+            } else {
+              // Push a null value to fill space
+              moves.push(null);
+            }
+          });
+
+        // Add the set's list of moves to the document moves list
+        document.moves_list.push(moves);
+
+        // Add the pokemon's paste content to the export variable
+        document.paste_export.push(content);
+      } else {
+        // Pokemon does not exist, no need to continue
+        console.warn(`Warning: Species '${species}' not found!`);
+      }
+    });
 
   // If we are looking at the
   // defensive table
   if (document.active == 0) {
     // Generate the defensive coverage table
-    document.defense = get_table_defensive(document.types_list, document.abilities_list);
+    document.defense = get_table_defensive(
+      document.types_list,
+      document.abilities_list
+    );
 
     // Populate the displayed table using the defensive data
     populate_table(document.defense);
-  }
-  else // We are looking at the offensive table
-  {
+  } // We are looking at the offensive table
+  else {
     // Generate the offensive coverage table
-    document.offense = get_table_offensive(document.moves_list, document.abilities_list);
+    document.offense = get_table_offensive(
+      document.moves_list,
+      document.abilities_list
+    );
 
     // Populate the displayed table using the offensive data
     populate_table(document.offense);
@@ -1259,11 +1283,11 @@ function update(id = null) {
 }
 
 // import_showdown(): void
-// Imports the pokemon from the user's 
+// Imports the pokemon from the user's
 // clipboard to the form
 function import_showdown() {
   // Get the text from the textarea
-  let content = document.getElementById('text-import').value;
+  let content = document.getElementById("text-import").value;
 
   // Parse the sets from the import
   let sets = parseSets(content);
@@ -1275,7 +1299,7 @@ function import_showdown() {
   }
 
   // Remove the import form
-  document.getElementById('table-pkmn-import').innerHTML = ``;
+  document.getElementById("table-pkmn-import").innerHTML = ``;
 }
 
 // Initialise the document variables
@@ -1301,30 +1325,7 @@ document.moves = MOVES;
 document.types = TYPES;
 
 // Reference of the number of types in the game
-document.typeCount = Object.keys(document.types).length;
-
-// Reference for the colour which should be displayed
-// in the background of moves of a given type
-document.typeColours = {
-  'Bug': '#f3f7d4',
-  'Dark': '#ece3df',
-  'Dragon': '#b3b3cc',
-  'Electric': '#e0e0eb',
-  'Fairy': '#ffe6ff',
-  'Fighting': '#f1ddda',
-  'Fire': '#ffe9e6',
-  'Flying': '#e6eeff',
-  'Ghost': '#dcdcef',
-  'Grass': '#e0f3d8',
-  'Ground': '#fbf7ea',
-  'Ice': '#e6f9ff',
-  'Normal': '#f3f1f1',
-  'Poison': '#f6eef5',
-  'Psychic': '#ffe6f0',
-  'Rock': '#f7f5ed',
-  'Steel': '#f1f1f4',
-  'Water': '#e6f2ff'
-}
+document.typeCount = TYPE_LIST.length;
 
 // Reference of the table index associated with each type
 document.typeMap = kv_map(document.types);
@@ -1333,11 +1334,11 @@ document.typeMap = kv_map(document.types);
 
 // 2D Array for building the defensive calculations table
 // Empty / undefined by default, is built during update
-document.defense = null
+document.defense = null;
 
 // 2D Array for building the offensive calculations table
 // Empty / undefined by default, is built during update
-document.offense = null
+document.offense = null;
 
 // Specifies which table is active
 // 0: Defense, 1: Offense
@@ -1348,46 +1349,49 @@ document.active = 0;
 // Load the type rows into the page
 load_types();
 
-// Add a default pokemon object to the form
-add_pokemon();
-
 // Set the active table to the defenses table
 set_table_defensive();
 
 // --- Add Event Listeners --- //
 
 // Export to clipboard event listener
-document.getElementById('paste-export').addEventListener('click', async event => {
+document
+  .getElementById("paste-export")
+  .addEventListener("click", async (event) => {
+    // If the clipboard module exists in the client's browser
+    if (navigator.clipboard) {
+      // Export string which will be copied to the clipboard
+      let content = document.paste_export.join(`\n`);
 
-  // If the clipboard module exists in the client's browser
-  if (navigator.clipboard) {
-    // Export string which will be copied to the clipboard
-    let content = document.paste_export.join(`\n`);
+      try {
+        // Copy the string to the clipboard
+        await navigator.clipboard.writeText(content);
 
-    try {
-      // Copy the string to the clipboard
-      await navigator.clipboard.writeText(content);
+        console.log("Content `" + content + "` copied to clipboard!");
 
-      console.log('Content `' + content + '` copied to clipboard!');
-
-      // Successful copy alert
-      window.alert(document.paste_export.length + ' Pokemon copied to clipboard successfully.');
+        // Successful copy alert
+        window.alert(
+          document.paste_export.length +
+            " Pokemon copied to clipboard successfully."
+        );
+      } catch (err) {
+        // Report the failure to the error console
+        console.error(
+          "Failed to copy content `" + content + "`! Reason: `" + err + "`"
+        );
+      }
+    } // Clipboard module is not available
+    else {
+      // Report failure to console, continue
+      console.error("Clipboard interaction not supported by browser.");
     }
-    catch (err) {
-      // Report the failure to the error console
-      console.error('Failed to copy content `' + content + '`! Reason: `' + err + '`');
-    }
-  }
-  else // Clipboard module is not available
-  {
-    // Report failure to console, continue
-    console.error('Clipboard interaction not supported by browser.');
-  }
-});
+  });
 
 // Import from clipboard event listener
-document.getElementById('paste-import').addEventListener('click', async event => {
-  document.getElementById('table-pkmn-import').innerHTML = `
+document
+  .getElementById("paste-import")
+  .addEventListener("click", async (event) => {
+    document.getElementById("table-pkmn-import").innerHTML = `
   <tr>
     <td>
       <textarea id='text-import' class='form-control' placeholder='Paste your team here...'></textarea>
@@ -1401,4 +1405,4 @@ document.getElementById('paste-import').addEventListener('click', async event =>
     </td>
   </tr>
   `;
-});
+  });

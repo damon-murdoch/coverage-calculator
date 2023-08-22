@@ -1,142 +1,175 @@
 <!DOCTYPE html>
+<meta charset="utf-8" />
 <html>
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
-  <meta charset="UTF-8">
+    <title>Pokemon Type Coverage Calculator</title>
 
-  <title>
-    Pokemon Type Coverage Calculator
-  </title>
-
-  <!-- Bootstrap External CSS File -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-
-</head>
-
-<body class=''>
-  <div id='head'>
-    <div id='title' class='text-center'>
-      <h1 class='display-4'>Pokemon Type Coverage Calculator</h1>
-      <p class='text-muted lead'>Developed by <a href='https://twitter.com/SirScrubbington'>Damon Murdoch</a></p>
-      <p class='text-muted lead'>Based on the original by <a href='https://twitter.com/GabbySnyder'>Gabby Snyder</a></p>
-    </div>
-  </div>
-  <div id='body' class='container-fluid'>
-
-    <div class='row'>
-
-      <div id='table-pkmn-container' class='col-s'>
-        <table id='table-pkmn' class='table' style='overflow: hidden'>
-          <thead id='pkmn-control' class='thead-light'>
-            <tr>
-              <th scope='col'>
-                <a href='#' onClick='add_pokemon()'>
-                  Add New
-                </a>
-              </th>
-              <th scope='col'>
-                <a id='paste-import' href='#'>
-                  Import from PS!
-                </a>
-                <a id='paste-export' href='#'>
-                  Export to PS!
-                </a>
-              </th>
-            </tr>
-          </thead>
-          <thead id='pkmn-header' class='thead-dark'>
-            <tr>
-              <th scope='col'>
-                Pokemon
-              </th>
-              <th scope='col'>
-              </th>
-            </tr>
-          </thead>
-          <table id='table-pkmn-import' class='table' style='overflow-y: scroll'>
-          </table>
-          <table id='table-pkmn-contents' class='table' style='overflow-y: scroll'>
-          </table>
-        </table>
+    <!-- Bootstrap External CSS File -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+  </head>
+  <body
+    id="body"
+    class="bg-secondary"
+    style="
+      background-image: url(img/header.png);
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      background-size: cover;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    "
+  >
+    <div
+      style="
+        background-color: rgba(24, 24, 24, 0.8);
+        width: 100vw;
+        height: 100vh;
+        background-size: cover;
+        overflow: hidden;
+      "
+    >
+      <div id="header" class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <!-- Navigation Bar -->
+        <div class='d-flex justify-content-center'>
+          <nav class="navbar navbar-expand-lg navbar-dark">
+            <a class="navbar-brand text-secondary" href="https://www.dragapult.xyz">
+              <img src="img/favicon.ico" width="30" height="30" class="d-inline-block align-top" alt="icon">
+              Dragapult.xyz
+            </a>
+            <div id='navbar' class='d-flex justify-content-center'>
+              <a class='text-secondary' href="https://www.dragapult.xyz/index.html?vgc">
+                Other VGC Resources
+              </a>
+            </div>
+          </nav>
+        </div>
       </div>
-      <div id='table-coverage-container' class='col'>
-        <table id='table-coverage' class='table'>
-          <!-- Sets if offensive or defensive calcs should be shown -->
-          <thead id='table-selector' class='thead-light'>
-            <tr>
-              <th id='option-defensive' class='' scope="col">
-                <a href='#' onClick='set_table_defensive()'>
-                  Defensive
-                </a>
-              </th>
+      <div id="body" class="container-fluid">
+        <div class="row">
+          <div 
+            id="table-pkmn-container" 
+            class='col overflow-auto container bg-dark rounded ml-2 my-2'
+            style='min-width: 420px; max-width: 22vw; opacity: 0.8; max-height:90vh;'
+          >
+            <table id="table-pkmn" class="table table-dark" style="overflow: hidden">
+              <thead id="pkmn-control">
+                <tr>
+                  <th class="text-center" scope="col" colspan="2">
+                    <a class="text-secondary" href="#" onClick="add_pokemon()"> Add Pokemon </a>
+                    <a class="text-secondary" id="paste-import" href="#"> Import Sets </a>
+                    <a class="text-secondary" id="paste-export" href="#"> Export Sets </a>
+                    <a class="text-secondary" id="copy-linl" href="#"> Copy Link </a>
+                  </th>
+                </tr>
+              </thead>
+              <thead id="pkmn-header" class="thead-dark">
+                <tr>
+                  <th scope="col">Pokemon</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <table
+                id="table-pkmn-import"
+                class="table"
+                style="overflow-y: scroll"
+              ></table>
+              <table
+                id="table-pkmn-contents"
+                class="table"
+                style="overflow-y: scroll"
+              ></table>
+            </table>
+          </div>
+          <div 
+            id="table-coverage-container" 
+            class='col m-2 overflow-auto text-center container bg-dark rounded mr-2 my-2'
+            style='max-width: 78vw; opacity: 0.8; max-height:90vh;'
+          >
+            <div id="title" class="text-center">
+              <h2 class="text-light">
+                Pokémon Type Coverage Calculator
+              </h2>
+              <div class="container-fluid">
+                <p class="text-muted lead">
+                  Developed by
+                  <a href="https://twitter.com/SirScrubbington">Damon Murdoch</a>
+                </p>
+                <p class="text-muted lead">
+                  Based on the original by
+                  <a href="https://twitter.com/GabbySnyder">Gabby Snyder</a>
+                </p>
+              </div>
+            </div>
+            <table id="table-coverage" class="table table-dark">
+              <!-- Sets if offensive or defensive calcs should be shown -->
+              <thead id="table-selector">
+                <tr>
+                  <th id="option-defensive" class="" scope="col">
+                    <a class="text-light" href="#" onClick="set_table_defensive()"> Defensive </a>
+                  </th>
 
-              <th id='option-offensive' class='' scope="col">
-                <a href='#' onClick='set_table_offensive()'>
-                  Offensive
-                </a>
-              </th>
+                  <th id="option-offensive" class="" scope="col">
+                    <a class="text-light" href="#" onClick="set_table_offensive()"> Offensive </a>
+                  </th>
 
-              <!-- Filler Space -->
-              <th scope="col" colspan=6></th>
-            </tr>
-          </thead>
+                  <!-- Filler Space -->
+                  <th scope="col" colspan="6"></th>
+                </tr>
+              </thead>
 
-          <!-- Holds the table row titles -->
-          <thead id='table-header' class='thead-dark'>
-            <tr>
-              <th scope="col">Type</th>
-              <th scope="col">Immune</th>
-              <th scope="col">4x Resist</th>
-              <th scope="col">2x Resist</th>
-              <th scope="col">Neutral</th>
-              <th scope="col">2x Weak</th>
-              <th scope="col">4x Weak</th>
-              <th scope="col">Rating</th>
-            </tr>
-          </thead>
-          <!--
-							Rest are filled using JavaScript on load
-							Function: load_table(void): void
-						-->
-        </table>
+              <!-- Holds the table row titles -->
+              <thead id="table-header" class="thead-dark">
+                <tr>
+                  <th scope="col">Type</th>
+                  <th scope="col">Immune</th>
+                  <th scope="col">4x Resist</th>
+                  <th scope="col">2x Resist</th>
+                  <th scope="col">Neutral</th>
+                  <th scope="col">2x Weak</th>
+                  <th scope="col">4x Weak</th>
+                  <th scope="col">Rating</th>
+                </tr>
+              </thead>
+              <!--
+          Rest are filled using JavaScript on load
+          Function: load_table(void): void
+        -->
+            </table>
+          </div>
+        </div>
       </div>
+      <div id="foot"></div>
     </div>
+  </body>
+  <div id="javascript">
+    <!-- Pokemon Showdown! Parser Source Code -->
+    <script type="text/javascript" src="js/parser.js"></script>
+
+    <!-- Pokedex JavaScript Data Source File -->
+    <script type="text/javascript" src="data/pokemon.js"></script>
+
+    <!-- Display Colours (Per Type) Data Source File -->
+    <script type="text/javascript" src="data/colors.js"></script>
+
+    <!-- Pokemon Types JavaScript Data Source File -->
+    <script type="text/javascript" src="data/types.js"></script>
+
+    <!-- Pokemon Abilities JavaScript Data Source File -->
+    <script type="text/javascript" src="data/abilities.js"></script>
+
+    <!-- Pokemon Moves JavaScript Data source File -->
+    <script type="text/javascript" src="data/moves.js"></script>
+
+    <!-- Search / Dropdown Source File -->
+    <script type="text/javascript" src="js/search.js"></script>
+
+    <!-- Map 2D Array Math Library Source File -->
+    <script type="text/javascript" src="js/map.js"></script>
+
+    <!-- Page JavaScript Source File -->
+    <script type="text/javascript" src="index.js"></script>
   </div>
-  <div id='foot'>
-  </div>
-</body>
-<div id='javascript'>
-  <!-- Pokemon Showdown! Parser Source Code -->
-  <script type='text/javascript' src='js/parser.js'>
-  </script>
-
-  <!-- Pokedex JavaScript Data Source File -->
-  <script type='text/javascript' src='data/pokemon.js'>
-  </script>
-
-  <!-- Pokemon Types JavaScript Data Source File -->
-  <script type='text/javascript' src='data/types.js'>
-  </script>
-
-  <!-- Pokemon Abilities JavaScript Data Source File -->
-  <script type='text/javascript' src='data/abilities.js'>
-  </script>
-
-  <!-- Pokemon Moves JavaScript Data source File -->
-  <script type='text/javascript' src='data/moves.js'>
-  </script>
-
-  <!-- Search / Dropdown Source File -->
-  <script type='text/javascript' src='js/search.js'>
-  </script>
-
-  <!-- Map 2D Array Math Library Source File -->
-  <script type='text/javascript' src='js/map.js'>
-  </script>
-
-  <!-- Page JavaScript Source File -->
-  <script type='text/javascript' src='index.js'>
-  </script>
-</div>
-
 </html>
