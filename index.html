@@ -33,14 +33,26 @@
     >
       <div id="header" class="navbar navbar-expand-lg navbar-dark bg-dark">
         <!-- Navigation Bar -->
-        <div class='d-flex justify-content-center'>
+        <div class="d-flex justify-content-center">
           <nav class="navbar navbar-expand-lg navbar-dark">
-            <a class="navbar-brand text-secondary" href="https://www.dragapult.xyz">
-              <img src="img/favicon.ico" width="30" height="30" class="d-inline-block align-top" alt="icon">
+            <a
+              class="navbar-brand text-secondary"
+              href="https://www.dragapult.xyz"
+            >
+              <img
+                src="img/favicon.ico"
+                width="30"
+                height="30"
+                class="d-inline-block align-top"
+                alt="icon"
+              />
               Dragapult.xyz
             </a>
-            <div id='navbar' class='d-flex justify-content-center'>
-              <a class='text-secondary' href="https://www.dragapult.xyz/index.html?vgc">
+            <div id="navbar" class="d-flex justify-content-center">
+              <a
+                class="text-secondary"
+                href="https://www.dragapult.xyz/index.html?vgc"
+              >
                 Other VGC Resources
               </a>
             </div>
@@ -49,19 +61,39 @@
       </div>
       <div id="body" class="container-fluid">
         <div class="row">
-          <div 
-            id="table-pkmn-container" 
-            class='col overflow-auto container bg-dark rounded ml-2 my-2'
-            style='min-width: 420px; max-width: 22vw; opacity: 0.8; max-height:90vh;'
+          <div
+            id="table-pkmn-container"
+            class="col overflow-auto container bg-dark rounded ml-2 my-2"
+            style="
+              min-width: 420px;
+              max-width: 22vw;
+              opacity: 0.8;
+              max-height: 90vh;
+            "
           >
-            <table id="table-pkmn" class="table table-dark" style="overflow: hidden">
+            <table
+              id="table-pkmn"
+              class="table table-dark"
+              style="overflow: hidden"
+            >
               <thead id="pkmn-control">
                 <tr>
                   <th class="text-center" scope="col" colspan="2">
-                    <a class="text-secondary" href="#" onClick="add_pokemon()"> Add Pokemon </a>
-                    <a class="text-secondary" id="paste-import" href="#"> Import Sets </a>
-                    <a class="text-secondary" id="paste-export" href="#"> Export Sets </a>
-                    <a class="text-secondary" id="copy-linl" href="#"> Copy Link </a>
+                    <a class="text-secondary" href="#" onClick="add_pokemon()">
+                      Add Pokemon
+                    </a>
+                    <a class="text-secondary" id="paste-import" href="#">
+                      Import Sets
+                    </a>
+                    <a class="text-secondary" id="paste-export" href="#">
+                      Export Sets
+                    </a>
+                    <!--
+                      To be implemented :)
+                    <a class="text-secondary" id="copy-linl" href="#">
+                      Copy Link
+                    </a>
+                    -->
                   </th>
                 </tr>
               </thead>
@@ -83,23 +115,29 @@
               ></table>
             </table>
           </div>
-          <div 
-            id="table-coverage-container" 
-            class='col m-2 overflow-auto text-center container bg-dark rounded mr-2 my-2'
-            style='max-width: 78vw; opacity: 0.8; max-height:90vh;'
+          <div
+            id="table-coverage-container"
+            class="col m-2 overflow-auto text-center container bg-dark rounded mr-2 my-2"
+            style="max-width: 78vw; opacity: 0.8; max-height: 90vh"
           >
             <div id="title" class="text-center">
-              <h2 class="text-light">
-                Pokémon Type Coverage Calculator
-              </h2>
+              <h2 class="text-light">Pokémon Type Coverage Calculator</h2>
               <div class="container-fluid">
                 <p class="text-muted lead">
                   Developed by
-                  <a href="https://twitter.com/SirScrubbington">Damon Murdoch</a>
+                  <a class="text-secondary" href="https://twitter.com/SirScrubbington"
+                    >Damon Murdoch</a
+                  >
                 </p>
                 <p class="text-muted lead">
-                  Based on the original by
-                  <a href="https://twitter.com/GabbySnyder">Gabby Snyder</a>
+                  Based on the JTK coverage calculator by
+                  <a class="text-secondary" href="https://twitter.com/GabbySnyder">Gabby Snyder</a>
+                </p>
+                <p class="text-muted lead">
+                  Prefer the old version? Click
+                  <a class="text-secondary" href="https://www.dragapult.xyz/coverage-calculator-legacy"
+                    >here</a
+                  >
                 </p>
               </div>
             </div>
@@ -108,11 +146,23 @@
               <thead id="table-selector">
                 <tr>
                   <th id="option-defensive" class="" scope="col">
-                    <a class="text-light" href="#" onClick="set_table_defensive()"> Defensive </a>
+                    <a
+                      class="text-light"
+                      href="#"
+                      onClick="set_table_defensive()"
+                    >
+                      Defensive
+                    </a>
                   </th>
 
                   <th id="option-offensive" class="" scope="col">
-                    <a class="text-light" href="#" onClick="set_table_offensive()"> Offensive </a>
+                    <a
+                      class="text-light"
+                      href="#"
+                      onClick="set_table_offensive()"
+                    >
+                      Offensive
+                    </a>
                   </th>
 
                   <!-- Filler Space -->
