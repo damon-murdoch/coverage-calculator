@@ -1,3 +1,9 @@
+// Get base url from url
+function getBaseUrl(url){
+  // Return url without arguments
+  return url.split('?')[0];
+}
+
 // toCapitalCase(str: string)
 // Returns the provided string
 // with the first letter of each
@@ -1051,11 +1057,14 @@ function load_team_from_params(){
   // Team is set
   if (team)
   {
+    console.log("Loading team from params ...");
+
     // Decode the base-64 string
     const content = atob(team);
 
     // Import team from the content
     import_showdown(content);
+    console.log("Done.");
   }
   else // Team is not set
   {
@@ -1063,9 +1072,11 @@ function load_team_from_params(){
     const content = getCookie('team');
 
     // Content is not null
-    if (content !== null && content !== ''){
+    if (content !== null && content !== ''){    
+      console.log("Loading team from cookies ...");
       // Import team from the content
       import_showdown(content);
+      console.log("Done.");
     }
   }
 }
@@ -1389,7 +1400,7 @@ document
   `;
   });
 
-// Copy page link event listener
+// Share page link event listener
 document
   .getElementById("share-page")
   .addEventListener("click", async (event) => {
@@ -1401,14 +1412,14 @@ document
       // Convert the string to base64
       const encodedTeam = btoa(content);
 
-      // Get the base url for the page
-      const origin = window.location.origin;
+      // Get the base url for the page (no arguments)
+      const base = getBaseUrl(window.location.href);
 
       try {
         // Origin is not null
-        if (origin !== 'null') {
+        if (base !== 'null') {
           // Generate the url to copy
-          const encodedUrl = `${origin}?team=${encodedTeam}`;
+          const encodedUrl = `${base}?team=${encodedTeam}`;
 
           // Copy the string to the clipboard
           await navigator.clipboard.writeText(encodedUrl);
@@ -1434,3 +1445,15 @@ document
       console.error("Clipboard interaction not supported by browser.");
     }
   });
+
+  // Reload page link event listener
+document
+.getElementById("reset-page")
+.addEventListener("click", async (event) => {
+
+  // Get the base url for the page (no arguments)
+  const base = getBaseUrl(window.location.href);
+
+  // Redirect to base url
+  window.location.href = base;
+});
