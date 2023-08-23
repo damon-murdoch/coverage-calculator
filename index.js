@@ -90,13 +90,11 @@ function load_types() {
 // Imports a given set object 'set'
 // to the form object at index 'id'
 function import_pokemon(set, id) {
-
   // Convert the species to lower case
   const species_lower = set.species.toLowerCase();
 
   // If the species is in the list
-  if (SPECIES.includes(species_lower)){
-
+  if (SPECIES.includes(species_lower)) {
     // Set the species of the set to the species
     document.getElementById("pkmn-species-" + id).value = species_lower;
 
@@ -104,21 +102,23 @@ function import_pokemon(set, id) {
     const ability_lower = set.ability.toLowerCase();
 
     // If the ability is in the list
-    if (ABILITIES.includes(ability_lower)){
-
+    if (ABILITIES.includes(ability_lower)) {
       // Set the ability of the set to the ability
       document.getElementById("pkmn-ability-" + id).value = ability_lower;
     }
-    else // Unhandled ability
-    {
+    // No ability / not important ability
+    else if (NO_ABILITY.includes(ability_lower)){
+      // Do not need to log
+    }
+    // Unhandled ability
+    else {
       console.warn(`Unrecognised ability: '${ability_lower}' ...`);
     }
 
     // If the tera type is specified
-    if ('tera type' in set.other){
-
+    if ("tera type" in set.other) {
       // Convert the tera type to lower case
-      const tera_lower = set.other['tera type'].toLowerCase();
+      const tera_lower = set.other["tera type"].toLowerCase();
 
       // Update the tera type for the
       document.getElementById("pkmn-tera-" + id).value = tera_lower;
@@ -126,30 +126,26 @@ function import_pokemon(set, id) {
 
     // Loop over the moves
     for (let i in set.moves) {
-
       // Get the move and convert to lower case
       const move_lower = set.moves[i].toLowerCase();
 
       // If the move is in the list
-      if (MOVES_LIST.includes(move_lower)){
-          
+      if (MOVES_LIST.includes(move_lower)) {
         // Generate the row id (for console)
         let row_id = "pkmn-" + id + "-move-" + (parseInt(i) + 1);
 
         // Set the current move to the move from the imported set
         document.getElementById(row_id).value = move_lower;
-      }
-      else // Move is not in the list
-      {
+      } // Move is not in the list
+      else {
         console.warn(`Unrecognised move: '${move_lower}' ...`);
       }
     }
 
     // Verify the displayed sprite
     set_sprite(id);
-  }
-  else // Unrecognised species
-  {
+  } // Unrecognised species
+  else {
     console.warn(`Unrecognised species: '${species_lower}' ...`);
   }
 
@@ -192,7 +188,7 @@ function add_pokemon(set = null) {
     `<select id='${species_id}' class='form-control' name='pkmn-species-${id}' onChange='update(${id})'></select>` +
     `<select id='${ability_id}' class='form-control mt-2' name='pkmn-ability-${id}' onChange='update(${id})'></select>` +
     `<div class='input-group mt-2'><div class="input-group-text"><small class='mr-2'>Terastralised</small>` +
-    `<input id='${tera_check_id}' type="checkbox" name='${tera_check_id}' onChange='update(${id})'></div>` + 
+    `<input id='${tera_check_id}' type="checkbox" name='${tera_check_id}' onChange='update(${id})'></div>` +
     `<select id='${tera_id}' class='form-control' name='pkmn-tera-${id}' onChange='update(${id})'></select></div>` +
     `</div></td>`;
 
@@ -243,7 +239,7 @@ function add_pokemon(set = null) {
   populate_tera_dropdown(tera_id);
 
   // Loop over move drop-downs
-  for(let i=1; i<=4; i++){
+  for (let i = 1; i <= 4; i++) {
     // Populate the move drop-down
     populate_moves_dropdown(`pkmn-${id}-move-${i}`);
   }
@@ -341,16 +337,15 @@ function set_sprite(id) {
   const id_species = document.getElementById("pkmn-species-" + id).value;
 
   // Convert the species to lower case
-  const species_lower = id_species.toLowerCase()
+  const species_lower = id_species.toLowerCase();
 
   // Find the species in the pokedex array
   const species = POKEDEX.find((x) => x.species == species_lower);
 
   // If the search was successful
   if (species) {
-
     // Generate the sprite reference
-    const species_sprite = species_lower.replace(' ', '-');
+    const species_sprite = species_lower.replace(" ", "-");
 
     // Generate the filename
     let filename = `img/box/${species_sprite}.png`;
@@ -383,9 +378,6 @@ function get_ability(damage, index, ability) {
   // 2: resist
   // 3: immune
 
-  // Updated
-  let updated = false;
-
   // Switch on type
   switch (index) {
     // Electric Type
@@ -394,26 +386,14 @@ function get_ability(damage, index, ability) {
       switch (ability) {
         // Motor Drive Grants Lightning Immunity
         case "motor drive":
-          // Set damage to 3 (immune)
-          damage = 3;
-          updated = true;
-
-          break;
-
         // Volt Absorb grants Lightning Immunity
         case "volt absorb":
-          // Set damage to 3 (immune)
-          damage = 3;
-          updated = true;
-
-          break;
-
         // Lightning Rod Grants Lightning Immunity
         case "lightning rod":
-          // Set damage to 3 (immune)
-          damage = 3;
-          updated = true;
-
+          {
+            // Set damage to 3 (immune)
+            damage = 3;
+          }
           break;
       }
 
@@ -425,203 +405,158 @@ function get_ability(damage, index, ability) {
       switch (ability) {
         // Fluffy adds fire weakness
         case "fluffy":
-          // Switch on damage dealt
-          switch (damage) {
-            // If the attack is currently neutral
-            case 0:
-              // Set it to super-effective
-              damage = 1;
-              updated = true;
-
-              break;
-
-            // If the attack is currently resisted
-            case 2:
-              // Set it to neutral
-              damage = 0;
-              updated = true;
-
-              break;
-          }
-
-          break;
-
         // Dry Skin adds fire weakness
         case "dry skin":
-          // Switch on damage dealt
-          switch (damage) {
-            // If the attack is currently neutral
-            case 0:
-              // Set it to super-effective
-              damage = 1;
-              updated = true;
+          {
+            // Switch on damage dealt
+            switch (damage) {
+              // If the attack is currently neutral
+              case 0: {
+                // Set it to super-effective
+                damage = 1;
+                break;
+              }
 
-              break;
-
-            // If the attack is currently resisted
-            case 2:
-              // Set it to neutral
-              damage = 0;
-              updated = true;
-              
-              break;
+              // If the attack is currently resisted
+              case 2: {
+                // Set it to neutral
+                damage = 0;
+                break;
+              }
+            }
           }
 
           break;
 
+        // Baked Body grants fire immunity
+        case "baked body":
         // Flash Fire grants fire immunity
-        case "flash fire":
+        case "flash fire": {
           // Set damage to 3 (immune)
           damage = 3;
-
           break;
+        }
 
         // Grants additional fire resist
         case "heatproof":
-          // Switch on damage dealt
-          switch (damage) {
-            // If the attack is currently neutral
-            case 0:
-              // Set it to resisted
-              damage = 2;
-              updated = true;
-
-              break;
-
-            // If the attack is currently super-effective
-            case 1:
-              // Set it to neutral
-              damage = 0;
-              updated = true;
-
-              break;
-          }
-
-          break;
-
         // Grants additional fire resist
         case "water bubble":
-          // Switch on damage dealt
-          switch (damage) {
-            // If the attack is currently neutral
-            case 0:
-              // Set it to resisted
-              damage = 2;
-              updated = true;
-
-              break;
-
-            // If the attack is currently super-effective
-            case 1:
-              // Set it to neutral
-              damage = 0;
-              updated = true;
-
-              break;
-          }
-
-          break;
-
         // Grants additional fire resist
         case "thick fat":
-          // Switch on damage dealt
-          switch (damage) {
-            // If the attack is currently neutral
-            case 0:
-              // Set it to resisted
-              damage = 2;
-              updated = true;
+          {
+            // Switch on damage dealt
+            switch (damage) {
+              // If the attack is currently neutral
+              case 0: {
+                // Set it to resisted
+                damage = 2;
+                break;
+              }
 
-              break;
-
-            // If the attack is currently super-effective
-            case 1:
-              // Set it to neutral
-              damage = 0;
-              updated = true;
-
-              break;
+              // If the attack is currently super-effective
+              case 1: {
+                // Set it to neutral
+                damage = 0;
+                break;
+              }
+            }
           }
-
           break;
       }
 
       break;
+
+    // Ghost Type
+    case 8: {
+      // Switch on ability
+      switch (ability) {
+        case "purifying salt": {
+          switch (damage) {
+            case 0: {
+              // Neutral
+              damage = 2; // Resist
+            }
+            case 1: {
+              // Weak
+              damage = 0; // Neutral
+            }
+          }
+        }
+      }
+      break;
+    }
 
     // Grass Type
     case 9:
-      // Switch on ability
-      switch (ability) {
-        // Sap Sipper - Grants immunity to grass moves
-        case "sap Sipper":
-          // Set damage to 3 (immune)
-          damage = 3;
-          updated = true;
-
-          break;
+      {
+        // Switch on ability
+        switch (ability) {
+          // Sap Sipper - Grants immunity to grass moves
+          case "sap Sipper": {
+            // Set damage to 3 (immune)
+            damage = 3;
+            break;
+          }
+        }
       }
-
       break;
 
     // Ground Type
-    case 10:
+    case 10: {
       // Switch on ability
       switch (ability) {
+        // Earth Eater - Grants immunity to ground moves
+        case "earth eater":
         // Levitate - Grants immunity to ground moves
-        case "levitate":
+        case "levitate": {
           // Set damage to 3 (immune)
           damage = 3;
-          updated = true;
-
           break;
+        }
       }
-
       break;
+    }
 
     // Ice Type
-    case 11:
+    case 11: {
       // Switch on ability
       switch (ability) {
         // Grants additional ice resist
-        case "thick fat":
+        case "thick fat": {
           // Switch on damage dealt
           switch (damage) {
             // If the attack is currently neutral
-            case 0:
+            case 0: {
               // Set it to resisted
               damage = 2;
-              updated = true;
-
               break;
-
+            }
             // If the attack is currently super-effective
-            case 1:
+            case 1: {
               // Set it to neutral
               damage = 0;
-              updated = true;
-
               break;
-          
+            }
           }
-
           break;
+        }
       }
-
       break;
+    }
 
     // Water Type
     case 17:
-      // Switch on ability
-      switch (ability) {
-        // Water Absorb - Grants immunity to water moves
-        case "water absorb":
-          // Set damage to 3 (immune)
-          damage = 3;
-          updated = true;
-
-          break;
+      {
+        // Switch on ability
+        switch (ability) {
+          // Water Absorb - Grants immunity to water moves
+          case "water absorb": {
+            // Set damage to 3 (immune)
+            damage = 3;
+            break;
+          }
+        }
       }
-
       break;
   }
 
@@ -644,17 +579,15 @@ function get_move(move, ability = null) {
   // let sound = "sound" in move.flags && move.flags["sound"] == 1 ? 1 : 0;
 
   // Check if the move is sound-based or not
-  let sound = (move.name in SOUND_MOVES);
+  let sound = move.name in SOUND_MOVES;
 
   // If the category is either physical or special
   // In other words, if the attack deals damage
 
   // If the move is either physical or special
-  if (['physical', 'special'].includes(move.category)){
-
+  if (["physical", "special"].includes(move.category)) {
     // If the ability is set
     if (ability) {
-
       // Switching on ability rather than type
       // simplifies the handling of Normalize.
       switch (ability) {
@@ -1057,7 +990,7 @@ function populate_table(map) {
       elem_rating.innerHTML = "Very Good";
 
       // Row background dark green
-      elem_row.style[`background-color`] = get_color('verygood');
+      elem_row.style[`background-color`] = get_color("verygood");
     }
 
     // If we have one more resistance than weaknesses
@@ -1066,7 +999,7 @@ function populate_table(map) {
       elem_rating.innerHTML = "Good";
 
       // Row background light green
-      elem_row.style[`background-color`] = get_color('good');
+      elem_row.style[`background-color`] = get_color("good");
     }
 
     // If we have the same number of weaknesses and resistances
@@ -1075,7 +1008,7 @@ function populate_table(map) {
       elem_rating.innerHTML = "Even";
 
       // Row background white
-      elem_row.style[`background-color`] = get_color('neutral');
+      elem_row.style[`background-color`] = get_color("neutral");
     }
 
     // If we have 2 or more weaknesses than resistances
@@ -1084,7 +1017,7 @@ function populate_table(map) {
       elem_rating.innerHTML = "Very Poor";
       //getbootstrap.com/docs/4.0/utilities/text/
       // Row background dark red
-      https: elem_row.style[`background-color`] = get_color('verybad');
+      https: elem_row.style[`background-color`] = get_color("verybad");
     }
 
     // If we have one more weakness than resistances
@@ -1093,7 +1026,7 @@ function populate_table(map) {
       elem_rating.innerHTML = "Poor";
 
       // Row background light red
-      elem_row.style[`background-color`] = get_color('bad');
+      elem_row.style[`background-color`] = get_color("bad");
     }
 
     // Unknown Rating
@@ -1102,7 +1035,37 @@ function populate_table(map) {
       elem_rating.innerHTML = "Not Calculated";
 
       // Row background white
-      elem_row.style[`background-color`] = get_color('neutral');
+      elem_row.style[`background-color`] = get_color("neutral");
+    }
+  }
+}
+
+// Load team from parameters, if possible
+function load_team_from_params(){
+  // Get the parameters sent to the current page
+  const params = new URLSearchParams(window.location.search);
+
+  // Get the team from the params
+  const team = params.get('team');
+
+  // Team is set
+  if (team)
+  {
+    // Decode the base-64 string
+    const content = atob(team);
+
+    // Import team from the content
+    import_showdown(content);
+  }
+  else // Team is not set
+  {
+    // Check for a team in cookies
+    const content = getCookie('team');
+
+    // Content is not null
+    if (content !== null && content !== ''){
+      // Import team from the content
+      import_showdown(content);
     }
   }
 }
@@ -1165,16 +1128,19 @@ function update(id = null) {
         const types = [];
 
         // Dereference the ability
-        const tera_lower = document.getElementById("pkmn-tera-" + id).value.toLowerCase();
+        const tera_lower = document
+          .getElementById("pkmn-tera-" + id)
+          .value.toLowerCase();
 
         // Check if the tera is enabled or disabled for this pokemon
-        const tera_checked = document.getElementById(`pkmn-tera-${id}-check`).checked;
+        const tera_checked = document.getElementById(
+          `pkmn-tera-${id}-check`
+        ).checked;
 
         // If tera type is found
-        if (TYPE_LIST.includes(tera_lower)){
-
+        if (TYPE_LIST.includes(tera_lower)) {
           // Use the tera type instead of the normal type
-          if (tera_checked){
+          if (tera_checked) {
             // Add the type to the types list
             types.push(tera_lower);
           }
@@ -1184,10 +1150,10 @@ function update(id = null) {
         }
 
         // If the types list is empty (no tera type)
-        if (types.length === 0){
+        if (types.length === 0) {
           // Add the primary type to the list
           types.push(lookup_dex.type1);
-            
+
           // Dex entry has a second type
           if ("type2" in lookup_dex) {
             // Add it to the list
@@ -1199,22 +1165,30 @@ function update(id = null) {
         document.types_list.push(types);
 
         // Dereference the ability
-        const ability_lower = document.getElementById("pkmn-ability-" + id).value;
+        const ability_lower = document.getElementById(
+          "pkmn-ability-" + id
+        ).value;
 
         // Ability is found
-        if (ABILITIES.includes(ability_lower)){
-
+        if (ABILITIES.includes(ability_lower)) {
           // Add the ability to the abilities list
           document.abilities_list.push(ability_lower);
 
           // Add the name of the ability to the export content
           content += `Ability: ` + toCapitalCase(ability_lower) + `\n`;
-        }
+        } 
         else // Pokemon has no set ability / invalid ability
-        {
-          console.warn(`Unrecognised ability: ${ability_lower} ...`);
+        {    
+          // No ability / not important ability
+          if (NO_ABILITY.includes(ability_lower)){
+            // Do not need to log
+          }
+          // Unhandled ability
+          else {
+            console.warn(`Unrecognised ability: '${ability_lower}' ...`);
+          }
 
-          // Push a null element (just to pad the list)
+          // Add null to abilities list
           document.abilities_list.push(null);
         }
 
@@ -1280,20 +1254,27 @@ function update(id = null) {
     // Populate the displayed table using the offensive data
     populate_table(document.offense);
   }
+
+  // Convert the paste export to base64, and save it to cookies
+  setCookie('team', btoa(document.paste_export), 30);
 }
 
 // import_showdown(): void
 // Imports the pokemon from the user's
 // clipboard to the form
-function import_showdown() {
-  // Get the text from the textarea
-  let content = document.getElementById("text-import").value;
+function import_showdown(content = null) {
+
+  // Content is not defined
+  if (content === null){
+    // Get the text from the textarea
+    content = document.getElementById("text-import").value;
+  }
 
   // Parse the sets from the import
   let sets = parseSets(content);
 
   // Loop over the sets
-  for (set of sets) {
+  for (const set of sets) {
     // Add the set to the page
     add_pokemon(set);
   }
@@ -1352,6 +1333,9 @@ load_types();
 // Set the active table to the defenses table
 set_table_defensive();
 
+// Load a team from the arguments, if present
+load_team_from_params();
+
 // --- Add Event Listeners --- //
 
 // Export to clipboard event listener
@@ -1366,8 +1350,6 @@ document
       try {
         // Copy the string to the clipboard
         await navigator.clipboard.writeText(content);
-
-        console.log("Content `" + content + "` copied to clipboard!");
 
         // Successful copy alert
         window.alert(
@@ -1405,4 +1387,50 @@ document
     </td>
   </tr>
   `;
+  });
+
+// Copy page link event listener
+document
+  .getElementById("share-page")
+  .addEventListener("click", async (event) => {
+    // If the clipboard module exists in the client's browser
+    if (navigator.clipboard) {
+      // Export string which will be copied to the clipboard
+      const content = document.paste_export.join(`\n`);
+
+      // Convert the string to base64
+      const encodedTeam = btoa(content);
+
+      // Get the base url for the page
+      const origin = window.location.origin;
+
+      try {
+        // Origin is not null
+        if (origin !== 'null') {
+          // Generate the url to copy
+          const encodedUrl = `${origin}?team=${encodedTeam}`;
+
+          // Copy the string to the clipboard
+          await navigator.clipboard.writeText(encodedUrl);
+
+          // Successful copy alert
+          message = "Page link copied successfully.";
+
+          window.alert(message);
+        } 
+        else // Origin is null
+        {
+          throw Error(`Origin is null! Is this a local site?`);
+        }
+      } catch (err) {
+        // Report the failure to the error console
+        console.error(
+          "Failed to copy url `" + encodedTeam + "`! Reason: `" + err + "`"
+        );
+      }
+    } // Clipboard module is not available
+    else {
+      // Report failure to console, continue
+      console.error("Clipboard interaction not supported by browser.");
+    }
   });

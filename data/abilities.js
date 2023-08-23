@@ -47,3 +47,8 @@ const ABILITIES = [
   "turboblaze", // Ignores Abilities that could hinder moves.
   "teravolt", // Ignores Abilities that could hinder moves.
 ];
+
+// Null / no ability list
+const NO_ABILITY = [
+  '', 'none', 'null', null
+];

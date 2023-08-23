@@ -76,9 +76,9 @@
               class="table table-dark"
               style="overflow: hidden"
             >
-              <thead id="pkmn-control">
+              <thead id="pkmn-control" class="text-center">
                 <tr>
-                  <th class="text-center" scope="col" colspan="2">
+                  <th scope="col" colspan="2">
                     <a class="text-secondary" href="#" onClick="add_pokemon()">
                       Add Pokemon
                     </a>
@@ -88,13 +88,18 @@
                     <a class="text-secondary" id="paste-export" href="#">
                       Export Sets
                     </a>
-                    <!--
-                      To be implemented :)
-                    <a class="text-secondary" id="copy-linl" href="#">
-                      Copy Link
-                    </a>
-                    -->
                   </th>
+                </tr>
+                  <th colspan="2">
+                    <a class="text-secondary" id="share-page" href="#">
+                      Share Page
+                    </a>
+                    <a class="text-secondary" id="reset-page" href="#">
+                      Reset Page
+                    </a>
+                  </th>
+                <tr>
+
                 </tr>
               </thead>
               <thead id="pkmn-header" class="thead-dark">
@@ -125,17 +130,25 @@
               <div class="container-fluid">
                 <p class="text-muted lead">
                   Developed by
-                  <a class="text-secondary" href="https://twitter.com/SirScrubbington"
+                  <a
+                    class="text-secondary"
+                    href="https://twitter.com/SirScrubbington"
                     >Damon Murdoch</a
                   >
                 </p>
                 <p class="text-muted lead">
                   Based on the JTK coverage calculator by
-                  <a class="text-secondary" href="https://twitter.com/GabbySnyder">Gabby Snyder</a>
+                  <a
+                    class="text-secondary"
+                    href="https://twitter.com/GabbySnyder"
+                    >Gabby Snyder</a
+                  >
                 </p>
                 <p class="text-muted lead">
                   Prefer the old version? Click
-                  <a class="text-secondary" href="https://www.dragapult.xyz/coverage-calculator-legacy"
+                  <a
+                    class="text-secondary"
+                    href="https://www.dragapult.xyz/coverage-calculator-legacy"
                     >here</a
                   >
                 </p>
@@ -212,6 +225,9 @@
 
     <!-- Pokemon Moves JavaScript Data source File -->
     <script type="text/javascript" src="data/moves.js"></script>
+
+    <!-- Cookies / Local Storage Source File -->
+    <script type="text/javascript" src="js/cookies.js"></script>
 
     <!-- Search / Dropdown Source File -->
     <script type="text/javascript" src="js/search.js"></script>

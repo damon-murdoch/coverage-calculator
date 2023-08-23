@@ -80,7 +80,7 @@ function populate_moves_dropdown(id) {
 }
 
 // Populate tera type dropdown on element
-function populate_tera_dropdown(id){
+function populate_tera_dropdown(id) {
   // Get the drop-down element matching the id
   const select = document.getElementById(id);
 
@@ -107,7 +107,6 @@ function populate_tera_dropdown(id){
 }
 
 function get_color(type) {
-
   // Placeholder
   color = "";
 
@@ -115,11 +114,10 @@ function get_color(type) {
   if (type in COLORS) {
     // Get the color for the type
     color = COLORS[type];
-  }
-  else // Color not found
-  {
+  } // Color not found
+  else {
     // Warning
-    console.warn(`Color for type '${type}' not found!`)
+    console.warn(`Color for type '${type}' not found!`);
   }
 
   // Return color
@@ -128,7 +126,6 @@ function get_color(type) {
 
 // function kv_map(object: object): list
 function kv_map(object) {
-
   // Object which will be returned
   let obj = {};
 
