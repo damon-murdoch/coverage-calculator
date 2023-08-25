@@ -871,18 +871,18 @@ const POKEDEX = [
   },
   {
     dex: "128",
-    species: "tauros-paldea",
+    species: "tauros-paldea-combat",
     type1: "fighting",
   },
   {
     dex: "128",
-    species: "tauros-paldea",
+    species: "tauros-paldea-blaze",
     type1: "fighting",
     type2: "fire",
   },
   {
     dex: "128",
-    species: "tauros-paldea",
+    species: "tauros-paldea-aqua",
     type1: "fighting",
     type2: "water",
   },
