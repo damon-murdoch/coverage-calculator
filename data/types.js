@@ -446,4 +446,4 @@ const TYPES = {
 };
 
 // List of types
-const TYPE_LIST = Object.keys(TYPES);
+const TYPELIST = Object.keys(TYPES);

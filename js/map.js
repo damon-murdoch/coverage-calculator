@@ -11,7 +11,7 @@ function sub_map(a,b)
 	y = a[0].lenth > b[0].length ? a[0].length : b[0].length;
 	
 	// Generate a new map to store the results
-	let map = get_map(x,y,0);
+	let map = getMap(x,y,0);
 	
 	// Iterate over x
 	for(let i=0; i<x; i++)
@@ -83,11 +83,11 @@ function col_sum(a,n)
 	return sum;
 }
 
-// add_map(a: map, b: map): map
+// addMap(a: map, b: map): map
 // Given two maps, adds them together and returns
 // the result. If one map is smaller than the other,
 // returns a map with the size of the biggest.
-function add_map(a,b)
+function addMap(a,b)
 {
 	// Pick the longer array for the x value
 	x = a.lenth > b.length ? a.length : b.length;
@@ -96,7 +96,7 @@ function add_map(a,b)
 	y = a[0].lenth > b[0].length ? a[0].length : b[0].length;
 	
 	// Generate a new map to store the results
-	let map = get_map(x,y,0);
+	let map = getMap(x,y,0);
 	
 	// Iterate over x
 	for(let i=0; i<x; i++)
@@ -128,12 +128,12 @@ function add_map(a,b)
 	return map;
 }
 
-// get_map(x: int, y: int, value: object)
+// getMap(x: int, y: int, value: object)
 // Given an x size, a y size and an optional value, 
 // creates a two-dimensional array [X,Y] and fills 
 // all of the entries with the value provided, 
 // or the default '0'.
-function get_map(x,y,value=0)
+function getMap(x,y,value=0)
 {
 	// Create a new single-dimensional array
 	// with the set length 'size'
