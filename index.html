@@ -2,10 +2,9 @@
 <meta charset="utf-8" />
 <html>
   <head>
-    <title>Pokemon Type Coverage Calculator</title>
+    <meta charset="UTF-8" />
 
-    <!-- Page icon (Dragapult) -->
-    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <title>Pokemon Type Coverage Calculator</title>
 
     <!-- Bootstrap External CSS File -->
     <link rel="stylesheet" href="css/bootstrap.min.css" />
@@ -77,30 +76,25 @@
               class="table table-dark"
               style="overflow: hidden"
             >
-              <thead id="pkmn-control" class="text-center">
+              <thead id="pkmn-control">
                 <tr>
-                  <th scope="col" colspan="2">
-                    <btn class="text-secondary btn-link" onClick="add_pokemon()">
+                  <th class="text-center" scope="col" colspan="2">
+                    <a class="text-secondary" href="#" onClick="addPokemon()">
                       Add Pokemon
-                    </btn>
-                    <btn class="text-secondary btn-link" id="paste-import">
+                    </a>
+                    <a class="text-secondary" id="paste-import" href="#">
                       Import Sets
-                    </btn>
-                    <btn class="text-secondary btn-link" id="paste-export">
+                    </a>
+                    <a class="text-secondary" id="paste-export" href="#">
                       Export Sets
-                    </btn>
+                    </a>
+                    <!--
+                      To be implemented :)
+                    <a class="text-secondary" id="copy-linl" href="#">
+                      Copy Link
+                    </a>
+                    -->
                   </th>
-                </tr>
-                  <th colspan="2">
-                    <btn class="text-secondary btn-link" id="share-page">
-                      Share Page
-                    </btn>
-                    <btn class="text-secondary btn-link" id="reset-page">
-                      Reset Page
-                    </btn>
-                  </th>
-                <tr>
-
                 </tr>
               </thead>
               <thead id="pkmn-header" class="thead-dark">
@@ -131,25 +125,17 @@
               <div class="container-fluid">
                 <p class="text-muted lead">
                   Developed by
-                  <a
-                    class="text-secondary"
-                    href="https://twitter.com/SirScrubbington"
+                  <a class="text-secondary" href="https://twitter.com/SirScrubbington"
                     >Damon Murdoch</a
                   >
                 </p>
                 <p class="text-muted lead">
                   Based on the JTK coverage calculator by
-                  <a
-                    class="text-secondary"
-                    href="https://twitter.com/GabbySnyder"
-                    >Gabby Snyder</a
-                  >
+                  <a class="text-secondary" href="https://twitter.com/GabbySnyder">Gabby Snyder</a>
                 </p>
                 <p class="text-muted lead">
                   Prefer the old version? Click
-                  <a
-                    class="text-secondary"
-                    href="https://www.dragapult.xyz/coverage-calculator-legacy"
+                  <a class="text-secondary" href="https://www.dragapult.xyz/coverage-calculator-legacy"
                     >here</a
                   >
                 </p>
@@ -163,7 +149,7 @@
                     <a
                       class="text-light"
                       href="#"
-                      onClick="set_table_defensive()"
+                      onClick="setTableDefensive()"
                     >
                       Defensive
                     </a>
@@ -173,7 +159,7 @@
                     <a
                       class="text-light"
                       href="#"
-                      onClick="set_table_offensive()"
+                      onClick="setTableOffensive()"
                     >
                       Offensive
                     </a>
@@ -198,9 +184,9 @@
                 </tr>
               </thead>
               <!--
-          Rest are filled using JavaScript on load
-          Function: load_table(void): void
-        -->
+                Rest are filled using JavaScript on load
+                Function: loadTable(void): void
+              -->
             </table>
           </div>
         </div>
@@ -226,9 +212,6 @@
 
     <!-- Pokemon Moves JavaScript Data source File -->
     <script type="text/javascript" src="data/moves.js"></script>
-
-    <!-- Cookies / Local Storage Source File -->
-    <script type="text/javascript" src="js/cookies.js"></script>
 
     <!-- Search / Dropdown Source File -->
     <script type="text/javascript" src="js/search.js"></script>
