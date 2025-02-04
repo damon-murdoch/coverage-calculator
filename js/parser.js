@@ -81,6 +81,9 @@ function parseSets(str) {
   // Get a new set template
   let current = null;
 
+  // Get the species from the pokedex
+  const SPECIES = Object.keys(POKEDEX);
+
   // Loop over each line in the string (lowercase)
   for (let line of str.split("\n")) {
 
@@ -91,7 +94,6 @@ function parseSets(str) {
     // Case 2: No Item, Gender: Nickname (Species)
     // Case 3: No Item: Nickname (Species) (Gender)
     // Case 4: Full: Nickname (Species) (Gender) @ Item
-
 
     // Strip the line to barest contents
     const line_strip = line.trim().toLowerCase();
